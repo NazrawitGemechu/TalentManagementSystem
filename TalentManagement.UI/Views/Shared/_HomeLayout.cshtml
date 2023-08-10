@@ -1,0 +1,167 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TalentManagement.Domain.Entities;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Talent Managment System</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <!--multiselect-->
+    <link rel="stylesheet" href="~/css/bootstrap-multiselect.css" />
+  
+    <!-- Favicon -->
+    <link href="~/jobassets/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/jobassets/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/jobassets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/jobassets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/jobassets/css/style.css" rel="stylesheet">
+    <!--Toastr-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
+    
+</head>
+<body>
+    <div class="container-xxl bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+            <a asp-controller="Main" asp-action="Home" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
+                <h1 class="m-0 text-primary">Broker</h1>
+            </a>
+         
+            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto p-4 p-lg-0">
+                    <a class="nav-link" asp-controller="Main" asp-action="Home" class="nav-item nav-link active">Home</a>
+                  
+                 
+                    <partial name="_LoginPartialCustom" />
+                   
+                </div>
+               
+               
+               
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company") || User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Job" asp-action="PostJob" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
+                }
+            </div>
+          
+        </nav>
+        <!-- Navbar End -->
+        <!--end-->
+    <div class="container">
+        <main role="main" class="pb-3">
+               
+            @RenderBody()
+        </main>
+    </div>
+    <!--endtop-->
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="text-white mb-4">About Us</h5>
+                        <p>Our platform is designed to revolutionize the way talent is discovered and hired, making the recruitment process more efficient and effective for both job seekers and employers </p>
+                        
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="text-white mb-4">Quick Links</h5>
+                        <a class="btn btn-link text-white-50" asp-controller="Main" asp-action="Home">Home</a>
+                        <a class="btn btn-link text-white-50" asp-controller="Main" asp-action="About">About Us</a>
+                        <a class="btn btn-link text-white-50" asp-controller="Main" asp-action="Contact">Contact Us</a>
+                        
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="text-white mb-4">Contact</h5>
+                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i> ICT Park Twins Building, Addis Ababa</p>
+                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+251-116 679207/14</p>
+                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@africom.com.et</p>
+                     
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="container">
+                <div class="copyright">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a class="border-bottom" href="#">Broker</a>, All Right Reserved.
+
+                          
+                           
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <div class="footer-menu">
+                                <a asp-controller="Main" asp-action="Home">Home</a>                      
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Back to Top -->
+            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        </div>
+        <!-- Footer End -->
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/jobassets/lib/wow/wow.min.js"></script>
+        <script src="~/jobassets/lib/easing/easing.min.js"></script>
+        <script src="~/jobassets/lib/waypoints/waypoints.min.js"></script>
+        <script src="~/jobassets/lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="~/jobassets/js/main.js"></script>
+
+       
+        <!--//search jQuery-->
+
+       
+        <!-- //dropdown nav -->
+       
+
+        <!-- //password-script -->
+        <!-- //js -->
+        <script src="~/assets/js/bootstrap.js"></script>
+        <!--/ start-smoth-scrolling -->
+        <script src="~/assets/js/move-top.js"></script>
+        <script src="~/assets/js/easing.js"></script>
+
+        <!--multiselect-->
+        <script src="~/lib/jquery/dist/jqueryy.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundlee.min.js"></script>
+        <script src="~/css/bootstrap-multiselect.js"></script>
+       
+        
+        @await RenderSectionAsync("Scripts", required: false)
+
+
+</body>
+</html>

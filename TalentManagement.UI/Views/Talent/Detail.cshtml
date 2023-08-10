@@ -1,0 +1,417 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+
+@*
+
+@model TalentManagement.UI.Models.ViewModels.CreateTalentViewModel
+@using TalentManagement.Domain.Enum;
+@{
+    ViewData["Title"] = "Talent-Detail";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+@*<div class="container">
+    <div class="col-11 mx-auto pt-0 p-0">
+        <div class="card">
+            <div class="card-header text-center text-uppercase text-white" style="height:45px">
+                <h4>Talent Detail</h4>
+            </div>
+    <div class="single">
+
+
+
+
+            <form asp-action="Delete" enctype="multipart/form-data">
+            <div class="container-fluid btn-group">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-3 control-lable" asp-for="FirstName"></label>
+                                <div class="col-md-9">
+                                    <input asp-for="FirstName" path="firstName" id="firstName" class="form-control input-sm" disabled />
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-3 control-lable" asp-for="LastName"></label>
+                                <div class="col-md-9">
+                                    <input asp-for="LastName" path="firstName" id="lastName" class="form-control input-sm" disabled />
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-3 control-lable" asp-for="Email"></label>
+                                <div class="col-md-9">
+                                    <input asp-for="Email" path="dob" id="dob" class="form-control input-sm" disabled />
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-3 control-lable" >Phone No:</label>
+                                <div class="col-md-9">
+                                    <input asp-for="PhoneNo" path="email" id="email" class="form-control input-sm" disabled />
+
+                                </div>
+                            </div>
+
+                        </div>
+                            <div class="row">
+                                <div class="form-group col-md-12" style="margin-top:5px;display:inline;">
+                                    <label class="col-md-3 control-lable">Skills</label>
+                                    <div class="col-md-9 col-xs-9" style="margin-left:5px; ">
+                                         <select name="SelectedSKills" class="form-control input-sm" asp-items="Model.Skills" multiple="multiple"></select>
+                                        Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm" ,multiple = "multiple", id = "Skills_dropdown"})
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                </div>
+                <div class="col-md-6">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-3 control-lable" asp-for="Gender"></label>
+                                <div class="col-md-9">
+                                    <select asp-for="Gender" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Gender>()" disabled>
+                                        <option value="" selected disabled>---Select Your Gender---</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-3 control-lable" asp-for="Language"></label>
+                                <div class="col-md-9">
+                                    <select asp-for="Language" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Language>()" disabled>
+                                        <option value="" selected disabled>---Select Language Proficency---</option>
+                                    </select>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-3 control-lable" asp-for="Country"></label>
+                                <div class="col-md-9">
+                                    <select asp-for="Country" path="country" id="country" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Country>()" disabled>
+                                        <option value="" selected disabled>---Select Your Country---</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label class="col-md-3 control-lable">Education Levels</label>
+                                    <div class="col-md-9">
+                                        @Html.ListBoxFor(model => model.SelectedEducation, new MultiSelectList(Model.EducationLevels, "Value", "Text"), new { @class = "form-control input-sm", multiple = "multiple", id = "Educations_dropdown"})
+
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+
+
+
+
+                        <div class="card-header text-center text-uppercase text-white" style="height:45px">
+                <h3>Work Experience</h3>
+
+                </div>
+
+
+                <table id='ExpTable' class="table ">
+                    <thead>
+                        <tr>
+                            <th>
+                                Company Name
+                            </th>
+                            <th>
+                                Role
+                            </th>
+                            <th>
+                                Number Of Years
+                            </th>
+                            <th>
+                                Company Email Address
+
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (int i = 0; i < Model.TalentExperiences.Count; i++)
+                        {
+                            <tr>
+                                <td>
+
+
+                                    <input asp-for="@Model.TalentExperiences[i].CompanyName" class="form-control-plaintext" readonly />
+
+                                </td>
+                                <td>
+
+
+                                    <input asp-for="@Model.TalentExperiences[i].Role" class="form-control-plaintext" readonly />
+
+                                </td>
+                                <td>
+
+
+                                    <input asp-for="@Model.TalentExperiences[i].NumberOfYears" class="form-control-plaintext" readonly />
+
+                                </td>
+                                <td>
+
+
+                                    <input asp-for="@Model.TalentExperiences[i].CompanyEmailAddress" class="form-control-plaintext" readonly />
+
+                                </td>
+                                <td>
+                                    <button id='btndummy-@i' type="button" class="btn btn-sm invisible">Dummy</button>
+
+
+                                    <button id='btnremove-@i' type="button" class="btn btn-sm btn-danger invisible" onclick="DeleteItem(this)"
+                                            style="left:90%;position:absolute;">
+                                        Delete
+                                    </button>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <input type="hidden" id="hdnLastIndex" value="0" />
+
+
+                <br />
+
+
+                </div>
+            </div>
+            </form>
+
+
+        </div>
+        <input type="button" asp-controller="Talent" asp-action="Index" value="Back To List" class="btn btn-primary float-right"/>
+        </div>
+        </div>
+
+@*</div>*
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+
+
+
+        function DeleteItem(btn) {
+            $(btn).closest('tr').remove();
+        }
+
+
+
+        function AddItem(btn) {
+
+            var table = document.getElementById('ExpTable');
+            var rows = table.getElementsByTagName('tr');
+
+            var rowOuterHtml = rows[rows.length - 1].outerHTML;
+
+            var lastrowIdx = document.getElementById('hdnLastIndex').value;
+
+            var nextrowIdx = eval(lastrowIdx) + 1;
+
+            document.getElementById('hdnLastIndex').value = nextrowIdx;
+
+            rowOuterHtml = rowOuterHtml.replaceAll('_' + lastrowIdx + '_', '_' + nextrowIdx + '_');
+            rowOuterHtml = rowOuterHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
+            rowOuterHtml = rowOuterHtml.replaceAll('-' + lastrowIdx, '-' + nextrowIdx);
+
+
+            var newRow = table.insertRow();
+            newRow.innerHTML = rowOuterHtml;
+
+
+
+            var btnAddID = btn.id;
+            var btnDeleteid = btnAddID.replaceAll('btnadd', 'btnremove');
+
+            var delbtn = document.getElementById(btnDeleteid);
+            delbtn.classList.add("visible");
+            delbtn.classList.remove("invisible");
+
+
+            var addbtn = document.getElementById(btnAddID);
+            addbtn.classList.remove("visible");
+            addbtn.classList.add("invisible");
+
+        }
+        $(document).ready(function () {
+            $('#Skills_dropdown').multiselect();
+        });
+        $(document).ready(function () {
+            $('#Educations_dropdown').multiselect();
+        });
+
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
+}
+
+*@
+@model TalentManagement.Domain.Entities.Talent
+
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row gy-5 gx-4">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-5">
+
+                    <div class="text-start ps-4">
+                        <h3 class="mb-3">@Model.FirstName @Model.LastName</h3>
+                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Country</span>
+                        <span class="text-truncate me-3">@Model.Email</span>
+
+                    </div>
+                </div>
+
+                <div class="mb-5">
+
+                    <h4 class="mb-3">Skills</h4>
+
+                    <ul class="list-unstyled">
+                        @foreach (var skill in Model.Skills)
+                        {
+                            <li><i class="fa fa-angle-right text-primary me-2"></i>@skill.Skill.SkillName</li>
+
+                        }
+                    </ul>
+                    <h4 class="mb-3">Highest Education Levels</h4>
+
+                    <ul class="list-unstyled">
+                        @foreach (var education in Model.EducationLevels)
+                        {
+                            <li><i class="fa fa-angle-right text-primary me-2"></i>@education.EducationLevel.EducationLevelName</li>
+
+                        }
+
+                    </ul>
+                    <h4 class="mb-3">Previous Experience</h4>
+                    <table class="table table-striped bordered">
+                        <thead>
+                            <tr>
+                                <th>Company Name</th>
+                                <th>Role</th>
+                                <th>Number of years</th>
+                                <th>Company Email Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var exp in Model.TalentExperiences)
+                            {
+
+                                <tr>
+
+                                    <td>@exp.CompanyName</td>
+                                    <td>@exp.Role</td>
+                                    <td>@exp.NumberOfYears</td>
+                                    <td>@exp.CompanyEmailAddress</td>
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+
+            </div>
+
+            <div class="col-lg-4">
+                <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
+                    <h4 class="mb-4">Talent Summery</h4>
+
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Name: @Model.FirstName @Model.LastName</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Gender:@Model.Gender</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Email: @Model.Email</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Phone No: @Model.PhoneNo</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location:@Model.Country</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Language:@Model.Language</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><a asp-action="DownloadCV" asp-controller="Talent"asp-route-fileName="@Model.FilePath">Download CV</a></p>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @*col-12 text-right d-flex justify-content-end mb-2*@
+    <div class="">
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+        {
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <br />
+                    <a class="w-100 btn btn-lg btn-outline-dark" asp-controller="Talent" asp-action="Resume">Back</a>
+                    <br />
+                    <br />
+                </div>
+                <div class="form-group col-md-6">
+                    <br />
+                    <a class="w-100 btn btn-lg btn-success" asp-controller="Talent" asp-action="Edit" asp-route-id="@Model.Id">Update</a>
+                    <br />
+                    <br />
+                </div>
+            </div>
+            @*<a asp-action="Resume" asp-controller="Talent" class="btn btn-outline-dark">Back</a>*@
+        }
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
+        {
+
+            <a asp-action="Index" asp-controller="Talent" class="btn btn-outline-dark">Back</a>
+        }
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+        {
+
+            <a asp-action="Index" asp-controller="Talent" class="btn btn-outline-dark">Back</a>
+        }
+        @* else{
+        <a asp-action="Home" asp-controller="Main" class="btn btn-outline-dark">Back</a>
+        }*@
+    </div>
+</div>
