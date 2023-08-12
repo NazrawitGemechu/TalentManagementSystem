@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.Mail;
+using System.Net;
 using TalentManagement.Domain.Entities;
 using TalentManagement.UI.Models;
 
@@ -99,7 +101,8 @@ namespace TalentManagement.UI.Controllers
                         await _userManager.AddToRoleAsync(user, "Talent");
 
                     }
-                   // await _signInManager.SignInAsync(user, isPersistent: false);
+                   
+                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return View("RegisterCompleted");
                 }
 
@@ -125,7 +128,61 @@ namespace TalentManagement.UI.Controllers
             model.RoleList = listItems;
             return View(model);
         }
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            //if (userId == null || token == null)
+            //{
+            //    return RedirectToAction("Error");
+            //}
 
+            var user = await _userManager.FindByIdAsync(userId);
+
+            //if (user == null)
+            //{
+            //    return RedirectToAction("Error");
+            //}
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("EmailConfirmed");
+            }
+
+            return RedirectToAction("Error");
+        }
+        public IActionResult ConfirmationMessage()
+        {
+            return View();
+        }
+
+        public IActionResult EmailConfirmed()
+        {
+            return View();
+        }
+
+        private async Task SendEmailConfirmationAsync(string email, string link)
+        {
+            var from = "nazrawitgemechu9706@gmail.com";
+            var password = "ooofgaloudemutkq";
+            var subject = "Confirm your email";
+            var body = $"Please confirm your email by clicking this link: <a href='{link}'>link</a>";
+
+            using (var client = new SmtpClient("smtp.gmail.com", 587))
+            {
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential(from, password);
+
+                var message = new MailMessage();
+                message.From = new MailAddress(from);
+                message.To.Add(new MailAddress(email));
+                message.Subject = subject;
+                message.Body = body;
+                message.IsBodyHtml = true;
+
+                await client.SendMailAsync(message);
+            }
+        }
 
         [HttpGet]
         [AllowAnonymous]
@@ -145,6 +202,14 @@ namespace TalentManagement.UI.Controllers
             returnurl = returnurl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    ModelState.AddModelError("", "You must confirm your email to be able to log in.");
+                    return View(model);
+                }
+
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -193,7 +258,12 @@ namespace TalentManagement.UI.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {                   
-                        await _userManager.AddToRoleAsync(user, "Company");                                   
+                        await _userManager.AddToRoleAsync(user, "Company");
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, Request.Scheme);
+
+                    await SendEmailConfirmationAsync(model.Email, confirmationLink);
+                    return RedirectToAction("ConfirmationMessage");
                     // await _signInManager.SignInAsync(user, isPersistent: false);
                     return View("RegisterCompleted");
                 }
@@ -235,8 +305,14 @@ namespace TalentManagement.UI.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "Talent");
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, Request.Scheme);
+
+                    await SendEmailConfirmationAsync(model.Email, confirmationLink);
+                    return RedirectToAction("ConfirmationMessage");
+
                     // await _signInManager.SignInAsync(user, isPersistent: false);
-                    return View("RegisterCompleted");
+                   // return View("RegisterCompleted");
                 }
 
                 AddErrors(result);
