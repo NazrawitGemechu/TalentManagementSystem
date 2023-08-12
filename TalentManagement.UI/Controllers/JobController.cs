@@ -18,6 +18,7 @@ using TalentManagement.Application.Companies.Query;
 using TalentManagement.Application.Jobs.Command;
 using TalentManagement.Application.Talents.Command;
 using TalentManagement.Application.Skills.Query;
+using TalentManagement.Domain.Enum;
 
 namespace TalentManagement.UI.Controllers
 {
@@ -55,6 +56,18 @@ namespace TalentManagement.UI.Controllers
             var result = await _mediator.Send(query);
             //reders the view to the user
             return View("Index", result);
+        }
+        public IActionResult Search(string keyword, string jobType, int location)
+        {
+            var company = _context.Companies.ToList();
+            var locationEnum = (Country)location;
+            // Perform the search based on the received parameters
+            var jobs = _context.Jobs
+                .Where(j => j.JobTitle.Contains(keyword) && j.JobType == jobType && j.Company.Country.Equals(locationEnum))
+                .ToList();
+
+            // Pass the search results to the view
+            return View("Index",jobs);
         }
         public async Task<IActionResult> FilterCandidate(string searchString,int id)
         {
