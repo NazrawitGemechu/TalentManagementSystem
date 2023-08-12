@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@model IEnumerable<TalentManagement.Domain.Entities.Job>
 @{
     ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
@@ -48,9 +49,9 @@
                         <div class="col-10 col-lg-8">
                             <h1 class="display-3 text-white animated slideInDown mb-4">Find The Best Startup Job That Fit You</h1>
                             <p class="fs-5 fw-medium text-white mb-4 pb-2"></p>
-                              @if (!SignInManager.IsSignedIn(User))
+                            @if (!SignInManager.IsSignedIn(User))
                             {
-                            <a asp-controller="Account" asp-action="TalentRegister" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
+                                <a asp-controller="Account" asp-action="TalentRegister" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
                                 <a asp-controller="Account" asp-action="TalentRegister" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
                             }
                             else if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
@@ -59,7 +60,7 @@
                             }
                             else if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
                             {
-                                
+
                                 <a asp-controller="Job" asp-action="YourPosts" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
                             }
                             else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -82,126 +83,270 @@
         <div class="row g-4">
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                 <a class="cat-item rounded p-4" href="">
-                   
+
                     <h6 class="mb-3">Software Engineering</h6>
-                   
+
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
                 <a class="cat-item rounded p-4" href="">
-                   
+
                     <h6 class="mb-3">Web Developer</h6>
-                    
+
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
                 <a class="cat-item rounded p-4" href="">
-                   
+
                     <h6 class="mb-3">Data Science</h6>
-                   
+
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
                 <a class="cat-item rounded p-4" href="">
-                  
+
                     <h6 class="mb-3">Artificial Intellegence</h6>
-                   
+
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                 <a class="cat-item rounded p-4" href="">
-                   
+
                     <h6 class="mb-3">Network Security</h6>
-                   
+
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
                 <a class="cat-item rounded p-4" href="">
-                  
+
                     <h6 class="mb-3">Data Analyst</h6>
-                   
+
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
                 <a class="cat-item rounded p-4" href="">
-                 
+
                     <h6 class="mb-3">Computer Science</h6>
-                   
+
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
                 <a class="cat-item rounded p-4" href="">
-                   
+
                     <h6 class="mb-3">Computer Programming</h6>
-                    
+
                 </a>
             </div>
         </div>
     </div>
 </div>
 <!-- Category End -->
+<!-- Jobs Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
 
+                @*<li class="nav-item">
+                <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
+                <h6 class="mt-n1 mb-0">Full Time</h6>
+                </a>
+                </li>*@
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-1">
+                        <h6 class="mt-n1 mb-0">Full Time</h6>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
+                        <h6 class="mt-n1 mb-0">Part Time</h6>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    @{
+                        int counter = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        @if (item.JobType == "FullTime")
+                        {
+                            <div class="job-item p-4 mb-4">
+                                <div class="row g-4">
+
+                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+
+                                        <div class="text-start ps-4">
+                                            <h5 class="mb-3">
+
+                                                @Html.DisplayFor(modelItem => item.JobTitle)
+
+                                            </h5>
+                                            <p class="my-2">
+                                                @Html.DisplayFor(modelItem => item.JobType)
+
+                                            </p>
+                                           
+                                            <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => item.Company.Country)</span>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                        <div class="d-flex mb-3">
+                                            @if (!SignInManager.IsSignedIn(User) || !User.IsInRole("Talent") )
+                                            {
+                                                <a class="btn btn-primary" asp-controller="Account" asp-action="TalentRegister">Apply Now</a>
+
+                                            }
+                                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+                                            {
+
+
+
+                                                <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>
+                                          
+                                                
+
+                                            }
+                                        </div>
+                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line:@item.PostedDate.ToString("dd/MM/yyyy ")</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            { counter++; }
+                            @*@if (counter >= 5)
+                            {
+                                break;
+                            }*@
+                        }
+                    }
+
+                    <a class="btn btn-primary py-3 px-5" href="">Browse More Jobs</a>
+                </div>
+                <div id="tab-3" class="tab-pane fade show p-0">
+                    
+                    @foreach (var item in Model)
+                    {
+                        @if (item.JobType == "PartTime")
+                        {
+                            <div class="job-item p-4 mb-4">
+                                <div class="row g-4">
+
+                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+
+                                        <div class="text-start ps-4">
+                                            <h5 class="mb-3">
+
+                                                @Html.DisplayFor(modelItem => item.JobTitle)
+
+                                            </h5>
+                                            <p class="my-2">
+                                                @Html.DisplayFor(modelItem => item.JobType)
+
+                                            </p>
+                                           
+                                            <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => item.Company.Country)</span>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                        <div class="d-flex mb-3">
+
+                                            @if (!SignInManager.IsSignedIn(User) || !User.IsInRole("Talent"))
+                                            {
+                                                <a class="btn btn-primary" asp-controller="Account" asp-action="TalentRegister">Apply Now</a>
+
+                                            }
+                                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+                                            {
+                                                <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>
+
+
+                                            }
+                                        </div>
+                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: @item.PostedDate.ToString("dd/MM/yyyy ")</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            { counter++; }
+                            @*@if (counter >= 5)
+                    {
+                    break;
+                    }*@
+                        }
+                    }
+                    <a class="btn btn-primary py-3 px-5" href="">Browse More Jobs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Job list end-->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
         <h1 class="text-center mb-5">Skills</h1>
         <div class="owl-carousel testimonial-carousel">
             <div class="testimonial-item bg-light rounded p-4">
-                
+
                 <div class="d-flex align-items-center">
                     <img class="img-fluid flex-shrink-0 rounded" src="~/assets/images/cs.png" style="width: 50px; height: 50px;">
                     <div class="ps-3">
                         <h5 class="mb-1">C#</h5>
-                      
+
                     </div>
                 </div>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
-               
+
                 <div class="d-flex align-items-center">
                     <img class="img-fluid flex-shrink-0 rounded" src="~/assets/images/java.png" style="width: 50px; height: 50px;">
                     <div class="ps-3">
                         <h5 class="mb-1">Java</h5>
-                       
+
                     </div>
                 </div>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
-               
+
                 <div class="d-flex align-items-center">
                     <img class="img-fluid flex-shrink-0 rounded" src="~/assets/images/py.jpg" style="width: 50px; height: 50px;">
                     <div class="ps-3">
                         <h5 class="mb-1">Python</h5>
-                      
+
                     </div>
                 </div>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
-              
+
                 <div class="d-flex align-items-center">
                     <img class="img-fluid flex-shrink-0 rounded" src="~/assets/images/js.png" style="width: 50px; height: 50px;">
                     <div class="ps-3">
                         <h5 class="mb-1">JavaScript</h5>
-                       
+
                     </div>
                 </div>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
-               
+
                 <div class="d-flex align-items-center">
                     <img class="img-fluid flex-shrink-0 rounded" src="~/assets/images/reactt.png" style="width: 50px; height: 50px;">
                     <div class="ps-3">
                         <h5 class="mb-1">React</h5>
-                      
+
                     </div>
                 </div>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
-               
+
                 <div class="d-flex align-items-center">
                     <img class="img-fluid flex-shrink-0 rounded" src="~/assets/images/net.png" style="width: 50px; height: 50px;">
                     <div class="ps-3">
                         <h5 class="mb-1">Microsoft.Net</h5>
-                       
+
                     </div>
                 </div>
             </div>

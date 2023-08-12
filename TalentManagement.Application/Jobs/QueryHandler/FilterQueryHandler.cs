@@ -24,7 +24,7 @@ namespace TalentManagement.Application.Jobs.QueryHandler
         {
             //gets the query along with the search string from the controller
             //retrives jobs and compamies from the database
-            var jobs = await _context.Jobs.ToListAsync(cancellationToken);
+            var jobs = await _context.Jobs.Where(x=>x.IsAccepted==true).ToListAsync(cancellationToken);
             var companies = await _context.Companies.ToListAsync(cancellationToken);
            
             if (!string.IsNullOrEmpty(request.SearchString))

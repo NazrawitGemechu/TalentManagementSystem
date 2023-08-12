@@ -67,6 +67,10 @@
                
                
                
+                @if (!SignInManager.IsSignedIn(User) && !User.IsInRole("Company") || !User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Account" asp-action="CompanyRegister" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
+                }
                 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company") || User.IsInRole("Admin"))
                 {
                     <a asp-controller="Job" asp-action="PostJob" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>

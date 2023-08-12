@@ -6,58 +6,125 @@
 <div class="container-xxl py-5">
     <div class="container">
         <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Jobs</h1>
-        <div id="tab-1" class="tab-pane fade show p-0 active">
-            <form class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5 py-4" asp-controller="Job" asp-action="Filter">
-                <input name="searchString" type="text" class="form-control" placeholder="Search for a job..." />
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
+        <form class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5 py-4" asp-controller="Job" asp-action="Filter">
+            <input name="searchString" type="text" class="form-control" placeholder="Search for a job..." />
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
 
-            </form>
-            @foreach (var item in Model)
-            {
-                <div class="job-item p-4 mb-4">
-                    <div class="row g-4">
+        </form>
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
 
-                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
 
-                            <div class="text-start ps-4">
-                                <h5 class="mb-3">
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-1">
+                        <h6 class="mt-n1 mb-0">Full Time</h6>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
+                        <h6 class="mt-n1 mb-0">Part Time</h6>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
 
-                                    @Html.DisplayFor(modelItem => item.JobTitle)
+                    @{
+                        int counter = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        @if (item.JobType == "FullTime")
+                        {
+                            <div class="job-item p-4 mb-4">
+                                <div class="row g-4">
 
-                                </h5>
-                                <p class="my-2">
-                                    @Html.DisplayFor(modelItem => item.JobType)
-                                    @if (DateTime.Now >= item.PostedDate && DateTime.Now <= item.JobDeadline)
-                                    {
-                                    <p class="text-success"><b>OPEN</b></p>
-                                    }
-                                    else if (DateTime.Now > item.JobDeadline)
-                                    {
-                                    <p class="text-danger"><b>CLOSED</b></p>
-                                    }
-                                </p>
-                                <p>
-                                    Email: @Html.DisplayFor(modelItem => item.Company.CompanyEmail)
-                                </p>
-                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => item.Company.Country)</span>
+                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
 
+                                        <div class="text-start ps-4">
+                                            <h5 class="mb-3">
+
+                                                @Html.DisplayFor(modelItem => item.JobTitle)
+
+                                            </h5>
+                                            <p class="my-2">
+                                                @Html.DisplayFor(modelItem => item.JobType)
+
+                                            </p>
+
+                                            <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => item.Company.Country)</span>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                        <div class="d-flex mb-3">
+
+                                            <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>
+
+                                        </div>
+                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line:@item.PostedDate.ToString("dd/MM/yyyy ")</small>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                            <div class="d-flex mb-3">
 
-                                <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>
-                               
-                               @* <a class="btn btn-danger" asp-controller="Job" asp-action="DeleteJob" asp-route-id="@item.Id">Delete</a>*@
-                            </div>                     
-                            @*<a class="btn btn-outline-success" asp-controller="Job" asp-action="EditJob" asp-route-id="@item.Id">Update</a>*@
-                            
-
-                        </div>
-                        
-                    </div>
+                            { counter++; }
+                            @*@if (counter >= 5)
+                    {
+                    break;
+                    }*@
+                        }
+                    }
+       
                 </div>
-            }
+                <div id="tab-3" class="tab-pane fade show p-0">
+
+                    @foreach (var item in Model)
+                    {
+                        @if (item.JobType == "PartTime")
+                        {
+                            <div class="job-item p-4 mb-4">
+                                <div class="row g-4">
+
+                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+
+                                        <div class="text-start ps-4">
+                                            <h5 class="mb-3">
+
+                                                @Html.DisplayFor(modelItem => item.JobTitle)
+
+                                            </h5>
+                                            <p class="my-2">
+                                                @Html.DisplayFor(modelItem => item.JobType)
+
+                                            </p>
+
+                                            <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => item.Company.Country)</span>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                        <div class="d-flex mb-3">
+
+
+                                            <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>
+
+
+
+                                        </div>
+                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: @item.PostedDate.ToString("dd/MM/yyyy ")</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            { counter++; }
+                            @*@if (counter >= 5)
+                    {
+                    break;
+                    }*@
+                        }
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </div>
