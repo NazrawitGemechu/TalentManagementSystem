@@ -1,0 +1,10 @@
+﻿@model UserJob;
+
+<h2>Accept Talent</h2>
+
+<p>Are you sure you want to accept this talent?</p>
+
+<form method="post" asp-action="AcceptTalent">
+    <input type="hidden" asp-for="User.Talent.Email" />
+    <button type="submit">Accept</button>
+</form>

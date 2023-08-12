@@ -19,6 +19,8 @@ using TalentManagement.Application.Jobs.Command;
 using TalentManagement.Application.Talents.Command;
 using TalentManagement.Application.Skills.Query;
 using TalentManagement.Domain.Enum;
+using System.Net.Mail;
+using System.Net;
 
 namespace TalentManagement.UI.Controllers
 {
@@ -47,6 +49,29 @@ namespace TalentManagement.UI.Controllers
             //returns the job result that it recived form the handler
             return View(jobResult);
         }
+        public IActionResult AcceptTalent(string talentEmail)
+        {
+            // TODO: Update database to accept the talent
+
+            // Send acceptance email
+            using (var client = new SmtpClient("smtp.protonmail.com"))
+            {
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("nazrawitgemechu@protonmail.com", "0924339706nG!!!");
+                var message = new MailMessage();
+                message.From = new MailAddress("nazrawitgemechu@protonmail.com");
+                message.To.Add(new MailAddress(talentEmail));
+                message.Subject = "Your talent application has been accepted";
+                message.Body = "Congratulations! Your talent application has been accepted.";
+
+                client.Send(message);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+
         //search for a job
         public async Task<IActionResult> Filter(string searchString)
         {
