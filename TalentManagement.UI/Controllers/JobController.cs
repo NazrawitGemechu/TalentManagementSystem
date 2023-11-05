@@ -84,27 +84,7 @@ namespace TalentManagement.UI.Controllers
             }
             return RedirectToAction("Candidates");
         }
-        //public IActionResult AcceptTalent(string talentEmail)
-        //{
-        //    // TODO: Update database to accept the talent
-
-        //    // Send acceptance email
-        //    using (var client = new SmtpClient("smtp.gmail.com", 587))
-        //    {
-        //        client.EnableSsl = true;
-        //        client.Credentials = new NetworkCredential("nazrawitgemechu9706@gmail.com", "ooofgaloudemutkq");
-        //        var message = new MailMessage();
-        //        message.From = new MailAddress("nazrawitgemechu9706@gmail.com");
-        //        message.To.Add(new MailAddress(talentEmail));
-        //        message.Subject = "Your talent application has been accepted";
-        //        message.Body = "Congratulations! Your talent application has been accepted.";
-
-        //        client.Send(message);
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
-
+       
 
 
         //search for a job
