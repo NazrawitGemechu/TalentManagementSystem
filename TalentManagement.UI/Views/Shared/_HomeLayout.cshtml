@@ -50,7 +50,7 @@
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
             <a asp-controller="Main" asp-action="Home" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
-                <h1 class="m-0 text-primary">Broker</h1>
+                <h1><i class="fas fa-globe-africa"></i></h1> <i><h1 class="m-0 text-primary">TMS</h1></i>
             </a>
          
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -66,15 +66,15 @@
                 </div>
                
                
-               
-                @if (!SignInManager.IsSignedIn(User) && !User.IsInRole("Company") || !User.IsInRole("Admin"))
+               @*
+                @if (!SignInManager.IsSignedIn(User) || !User.IsInRole("Company") || !User.IsInRole("Admin"))
                 {
                     <a asp-controller="Account" asp-action="CompanyRegister" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
-                }
-                @*@if (SignInManager.IsSignedIn(User) && User.IsInRole("Company") || User.IsInRole("Admin"))
+                }*@
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company") || User.IsInRole("Admin"))
                 {
                     <a asp-controller="Job" asp-action="PostJob" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
-                }*@
+                }
             </div>
           
         </nav>
@@ -116,7 +116,7 @@
                 <div class="copyright">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Broker</a>, All Right Reserved.
+                            &copy; <a class="border-bottom" href="#">TMS</a>, All Right Reserved.
 
                           
                            

@@ -38,9 +38,9 @@
                                     </div>
                                     <div class="form-floating mb-3 col-md-6">
                                         <select asp-for="Country" class="form-select " asp-items="Html.GetEnumSelectList<Country>()">
-                                            <option value="" selected disabled>Select Country</option>
+                                            <option value="" selected disabled>Job Location</option>
                                         </select>
-                                        <label asp-for="Country" class="ms-2 text-muted"></label>
+                                        <label  class="ms-2 text-muted">Location</label>
                                         <span asp-validation-for="Country" class="text-danger"></span>
                                     </div>
                                     <div class="form-floating mb-3 col-md-6">

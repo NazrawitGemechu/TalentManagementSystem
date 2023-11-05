@@ -299,6 +299,7 @@
 
                     <div class="text-start ps-4">
                         <h3 class="mb-3">@Model.FirstName @Model.LastName</h3>
+                        
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Country</span>
                         <span class="text-truncate me-3">@Model.Email</span>
 
@@ -373,7 +374,11 @@
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Language:@Model.Language</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i><a asp-action="DownloadCV" asp-controller="Talent"asp-route-fileName="@Model.FilePath">Download CV</a></p>
 
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
+                    {
 
+                        <a asp-action="AcceptTalent" asp-controller="Job" class="btn btn-outline-dark">Send Email</a>
+                    }
 
                 </div>
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UserJob>;
+﻿
 @{
     ViewData["Title"] = "Candidates";
 }
@@ -51,7 +51,7 @@
 
                             </div>
 
-                            <a class="btn btn-primary" asp-controller="Job" asp-action="AcceptTalent" asp-route-talentEmail="@user.User.Talent.Email">Send Email</a>
+
 
                         </div>
 
@@ -64,10 +64,3 @@
     </div>
 </div>
 
-@*
-     <h3>@ViewBag.Job.Title</h3>
-                    <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">@ViewBag.TotalCandidates Candidates</p>
-                    <a asp-controller="Talent" asp-action="Detail" asp-route-id="@user.User.Talent.Id">Details</a>
-                        <p>@user.User.Email</p>
-                         <p>@user.User.Talent.Country</p>
-*@

@@ -7,7 +7,8 @@ using System.Net.Mail;
 using System.Net;
 using TalentManagement.Domain.Entities;
 using TalentManagement.UI.Models;
-
+using Microsoft.EntityFrameworkCore;
+using TalentManagement.Persistance.Data;
 
 namespace TalentManagement.UI.Controllers
 {
@@ -17,11 +18,13 @@ namespace TalentManagement.UI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+        private readonly ApplicationDbContext _context;
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -163,8 +166,8 @@ namespace TalentManagement.UI.Controllers
 
         private async Task SendEmailConfirmationAsync(string email, string link)
         {
-            var from = "nazrawitgemechu9706@gmail.com";
-            var password = "ooofgaloudemutkq";
+            var from = "brokerjobportal@gmail.com";
+            var password = "mtejmdsguytvodfg";
             var subject = "Confirm your email";
             var body = $"Please confirm your email by clicking this link: <a href='{link}'>link</a>";
 
@@ -253,7 +256,7 @@ namespace TalentManagement.UI.Controllers
             returnurl = returnurl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName ,LastName=model.LastName,CompanyName=model.CompanyName};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,CompanyName=model.CompanyName};
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -277,7 +280,7 @@ namespace TalentManagement.UI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> TalentRegister(string returnurl = null)
         {
-
+          
             if (!await _roleManager.RoleExistsAsync(UserRoles.Company))
             {
                 //create role
@@ -307,10 +310,11 @@ namespace TalentManagement.UI.Controllers
                     await _userManager.AddToRoleAsync(user, "Talent");
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, Request.Scheme);
-
-                    await SendEmailConfirmationAsync(model.Email, confirmationLink);
-                    return RedirectToAction("ConfirmationMessage");
-
+                      await SendEmailConfirmationAsync(model.Email, confirmationLink);
+                    
+                     return RedirectToAction("ConfirmationMessage");
+                    
+                   
                     // await _signInManager.SignInAsync(user, isPersistent: false);
                    // return View("RegisterCompleted");
                 }

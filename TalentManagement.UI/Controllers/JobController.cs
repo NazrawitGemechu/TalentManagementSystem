@@ -65,7 +65,7 @@ namespace TalentManagement.UI.Controllers
                 using (var client = new SmtpClient("smtp.gmail.com", 587))
                 {
                     client.EnableSsl = true;
-                    client.Credentials = new NetworkCredential("nazrawitgemechu9706@gmail.com", "ooofgaloudemutkq");
+                    client.Credentials = new NetworkCredential("africominfoet@gmail.com", "oksgjbvbpajpaniq");
                     var message = new MailMessage();
                     message.From = new MailAddress(from);
                     message.To.Add(new MailAddress(to));
@@ -303,8 +303,8 @@ namespace TalentManagement.UI.Controllers
 
             var command = new ApplyForJobCommand { JobId = _id, UserId = UserId };
             var result = await _mediator.Send(command);
-            return RedirectToAction("AppliedJobs");
-            // return result;
+           // return RedirectToAction("AppliedJobs");
+            return result;
         }
         [Authorize(Roles = "Talent")]
         public async Task<ActionResult> AppliedJobs(int id)

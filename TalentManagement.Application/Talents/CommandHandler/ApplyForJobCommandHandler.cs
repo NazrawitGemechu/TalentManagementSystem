@@ -51,7 +51,7 @@ namespace TalentManagement.Application.Talents.CommandHandler
                 await _context.SaveChangesAsync();
             }
 
-            return new RedirectToActionResult("Detail", "Job", null);
+            return new RedirectToActionResult("Home", "Main", null);
            
         }
     }

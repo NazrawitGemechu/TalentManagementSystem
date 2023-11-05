@@ -36,12 +36,12 @@ namespace TalentManagement.UI.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
-            [Required]
-            [Display(Name = "First Name")]
-            public string FirstName { get; set; }
-            [Required]
-            [Display(Name = "Last Name")]
-            public string LastName { get; set; }
+            //[Required]
+            //[Display(Name = "First Name")]
+            //public string FirstName { get; set; }
+            //[Required]
+            //[Display(Name = "Last Name")]
+            //public string LastName { get; set; }
             [Required]
             [Display(Name = "Company Name")]
             public string CompanyName { get; set; }
@@ -51,8 +51,8 @@ namespace TalentManagement.UI.Areas.Identity.Pages.Account.Manage
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var firstName = user.FirstName;
-            var lastName = user.LastName;
+            //var firstName = user.FirstName;
+            //var lastName = user.LastName;
             var companyName = user.CompanyName;
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
@@ -63,8 +63,8 @@ namespace TalentManagement.UI.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                FirstName=firstName,
-                LastName=lastName,
+                //FirstName=firstName,
+                //LastName=lastName,
                 CompanyName=companyName
             };
         }
@@ -87,16 +87,16 @@ namespace TalentManagement.UI.Areas.Identity.Pages.Account.Manage
             var firstName = user.FirstName;
             var lastName = user.LastName;   
             var companyName = user.CompanyName;
-            if (Input.FirstName != firstName)
-            {
-                user.FirstName = Input.FirstName;
-                await _userManager.UpdateAsync(user);
-            }
-            if (Input.LastName != lastName)
-            {
-                user.LastName = Input.LastName;
-                await _userManager.UpdateAsync(user);
-            }
+            //if (Input.FirstName != firstName)
+            //{
+            //    user.FirstName = Input.FirstName;
+            //    await _userManager.UpdateAsync(user);
+            //}
+            //if (Input.LastName != lastName)
+            //{
+            //    user.LastName = Input.LastName;
+            //    await _userManager.UpdateAsync(user);
+            //}
             if (Input.CompanyName != companyName)
             {
                 user.CompanyName = Input.CompanyName;

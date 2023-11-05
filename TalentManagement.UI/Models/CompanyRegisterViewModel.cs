@@ -5,14 +5,14 @@ namespace TalentManagement.UI.Models
 {
     public class CompanyRegisterViewModel
     {
-        [Required]
+        //[Required]
         
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-        [Required]
+        //[Display(Name = "First Name")]
+        //public string FirstName { get; set; }
+        //[Required]
         
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        //[Display(Name = "Last Name")]
+        //public string LastName { get; set; }
 
         [Required]
         [EmailAddress]

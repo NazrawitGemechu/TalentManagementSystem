@@ -65,6 +65,7 @@ namespace TalentManagement.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            
             var vm = new CreateTalentViewModel()
             {
                 Skills = await BindSkills(),
@@ -74,7 +75,10 @@ namespace TalentManagement.UI.Controllers
             string UserId = _userManager.GetUserId(User);
             var talents = await _mediator.Send(new GetAllTalentsQuery());
             var talent = talents.Where(x => x.ApplicantId == UserId).FirstOrDefault();
-            
+            if (talent != null)
+            {
+                return View("AlreadyUploaded");
+            }
             return View(vm);
         }
         [Authorize(Roles = "Talent")]
@@ -88,6 +92,7 @@ namespace TalentManagement.UI.Controllers
                 var command = new CreateTalentCommand { Model = model };
                 var result = await _mediator.Send(command);
                 return View("RegisterComplete");
+              
             }
             return View(model);
         }

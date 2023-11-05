@@ -17,7 +17,7 @@
                             <div class="col-md-12 ">
                                 <form asp-controller="Account" asp-action="CompanyRegister" class="row">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <div class="form-floating mb-3 col-md-6">
+                                   @* <div class="form-floating mb-3 col-md-6">
                                         <input asp-for="FirstName" class="form-control">
                                         <label asp-for="FirstName" class="ms-2 text-muted"></label>     
                                         <span asp-validation-for="FirstName" class="text-danger"></span>
@@ -26,7 +26,7 @@
                                         <input asp-for="LastName" class="form-control">
                                         <label asp-for="LastName" class="ms-2 text-muted"></label>      
                                         <span asp-validation-for="LastName" class="text-danger"></span>
-                                    </div>
+                                    </div>*@
                                     <div class="form-floating mb-3 col-md-6">
                                         <input asp-for="CompanyName" class="form-control">
                                         <label asp-for="CompanyName" class="ms-2 text-muted"></label>     
